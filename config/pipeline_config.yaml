@@ -1,0 +1,99 @@
+# Content Analysis Pipeline Configuration
+
+# Keywords for relevance scoring
+keywords:
+  - artificial intelligence
+  - machine learning
+  - deep learning
+  - neural network
+  - natural language processing
+  - nlp
+  - transformer
+  - attention mechanism
+  - research
+  - algorithm
+  - optimization
+  - training
+  - model
+  - performance
+  - evaluation
+
+# Relevance scoring weights
+relevance:
+  weights:
+    density: 0.3
+    coverage: 0.4
+    tfidf: 0.3
+
+# Summarization settings
+summarizer:
+  damping: 0.85  # PageRank damping factor
+  summary_sentences: 3  # Default number of sentences to extract
+
+# Duplicate detection
+duplicate_threshold: 0.8  # Cosine similarity threshold (0-1)
+
+# Priority classification
+priority:
+  # Thresholds for different metrics
+  relevance_thresholds:
+    critical: 0.9
+    high: 0.7
+    medium: 0.5
+    low: 0.3
+
+  length_thresholds:
+    min_words: 50
+    substantial: 200
+    comprehensive: 500
+
+  keyword_thresholds:
+    # Add critical keywords that indicate high-priority content
+    critical_keywords:
+      - breakthrough
+      - novel
+      - state-of-the-art
+      - significant
+      - groundbreaking
+    # Add high-priority keywords
+    high_keywords:
+      - important
+      - effective
+      - improved
+      - advanced
+      - innovative
+    urgent_patterns: []
+
+  # Weights for combined priority scoring
+  weights:
+    relevance: 0.4
+    length: 0.2
+    keyword_match: 0.3
+    recency: 0.1
+
+  # Score thresholds for priority levels
+  priority_thresholds:
+    critical: 0.85
+    high: 0.65
+    medium: 0.45
+    low: 0.25
+
+# Database settings
+database:
+  path: "conversations.db"  # Path to SQLite database
+  results_table: "analysis_results"  # Table to store results
+
+# Processing settings
+processing:
+  batch_size: 100  # Process documents in batches
+  skip_duplicates: true  # Filter out duplicates
+  platforms:
+    - claude
+    - chatgpt
+
+# Output settings
+output:
+  save_json: true
+  json_path: "output/pipeline_results.json"
+  save_to_db: true
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
