@@ -16,7 +16,11 @@ This repository provides tools for:
 
 ```
 conversation-analysis-tools/
-├── pipeline/                    # Content Analysis Pipeline (NEW!)
+├── core/                        # Core modules (NEW in P0 refactoring)
+│   ├── config.py               # Centralized configuration management
+│   ├── database.py             # Unified database access layer
+│   └── search_engine.py        # Consolidated search functionality
+├── pipeline/                    # Content Analysis Pipeline
 │   ├── relevance_scorer.py    # TF-IDF relevance scoring
 │   ├── summarizer.py           # TextRank extractive summarization
 │   ├── duplicate_detector.py  # Cosine similarity detection
@@ -25,10 +29,11 @@ conversation-analysis-tools/
 ├── config/
 │   └── pipeline_config.yaml    # Configuration for pipeline
 ├── tests/                      # Comprehensive test suite
+├── deprecated/                 # Legacy files (being phased out)
 ├── analyze_conversations.py    # Visualizations and CSV exports
 ├── content_analysis.py         # Basic text analysis
-├── run_pipeline.py             # Run content analysis pipeline
-└── setup.sh                    # Setup script
+├── conversation_search_gui.py  # Search GUI (refactored to use core/)
+└── run_pipeline.py             # Run content analysis pipeline
 ```
 
 ## Features
@@ -90,6 +95,10 @@ chmod +x setup.sh
 
 # Activate virtual environment
 source venv/bin/activate
+
+# Configure environment (optional)
+cp .env.example .env
+# Edit .env with your settings
 ```
 
 ### Manual Setup
@@ -102,11 +111,41 @@ source venv/bin/activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Configure database path and settings
+cp .env.example .env
+# Edit .env: set DB_PATH and other settings
+
 # Create output directories
 mkdir -p output logs visualizations content_analysis
 ```
 
 ## Usage
+
+### Using Core Modules (NEW - Recommended)
+
+The P0 refactoring introduced core modules that provide a clean, testable API:
+
+```python
+from core.config import Config
+from core.database import DatabaseConnection
+from core.search_engine import SearchEngine
+
+# Load configuration
+config = Config.load_from_env('.env')
+
+# Database operations
+with DatabaseConnection() as db:
+    platforms = db.get_platforms()
+    results = db.execute_query("SELECT * FROM conversations LIMIT 10")
+
+# Search operations
+with SearchEngine() as search:
+    results = search.keyword_search("machine learning", platform="claude")
+    stats = search.get_conversation_stats()
+    search.export_results(results, "search_results", format='csv')
+```
+
+See [deprecated/README.md](deprecated/README.md) for migration guide from legacy scripts.
 
 ### Basic Analysis
 

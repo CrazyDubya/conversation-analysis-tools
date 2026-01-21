@@ -179,6 +179,7 @@ conv-analyzer/cache/
 output/
 *.json
 sample_conversation.json
+*.backup
 
 # Environment files
 .env
