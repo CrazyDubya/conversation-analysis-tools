@@ -176,5 +176,10 @@ chatgpt/
 claude/
 conv-analyzer/app.log
 conv-analyzer/cache/
+output/
 *.json
 sample_conversation.json
+
+# Environment files
+.env
+!.env.example

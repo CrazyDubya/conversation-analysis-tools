@@ -302,15 +302,28 @@ sqlite3 conversations.db "SELECT * FROM conversation_summary LIMIT 10;"
 
 - [Main README](README.md) - This file
 - [Pipeline Documentation](PIPELINE_README.md) - Detailed pipeline guide
+- [Code Review](CODE_REVIEW.md) - Comprehensive code analysis and metrics
+- [Refactoring Plan](REFACTORING_PLAN.md) - Technical debt and improvement roadmap
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute to this project
 - [Tests](tests/) - Usage examples in test files
 - [Configuration](config/pipeline_config.yaml) - Commented config file
 
 ## Issues Tracking
 
 - **RUB-49**: Content Analysis Pipeline Implementation ✅ Complete
+- **Code Quality**: Comprehensive review completed - see [CODE_REVIEW.md](CODE_REVIEW.md)
 
 ## Contributing
 
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
+
+- Setting up your development environment
+- Code style guidelines
+- Testing requirements
+- Pull request process
+- Reporting bugs and suggesting features
+
+Quick start:
 1. Fork the repository
 2. Create a feature branch
 3. Add tests for new features
