@@ -5,8 +5,18 @@ import json
 import sqlite3
 from datetime import datetime
 
+# Use centralized configuration
+try:
+    from core.config import Config
+    config = Config()
+    DB_PATH = config.DB_PATH
+    output_dir = str(config.VISUALIZATIONS_DIR)
+except ImportError:
+    # Fallback for standalone usage
+    DB_PATH = "conversations.db"
+    output_dir = "visualizations"
+
 # Create output directory for visualizations
-output_dir = "visualizations"
 os.makedirs(output_dir, exist_ok=True)
 
 # Function to execute SQL and return DataFrame
@@ -15,7 +25,7 @@ def run_query(query, conn):
 
 # Connect to the database
 try:
-    conn = sqlite3.connect('/Users/pup/Desktop/Arch/conversations.db')
+    conn = sqlite3.connect(DB_PATH)
     print("Connected to database successfully")
 except Exception as e:
     print(f"Error connecting to database: {e}")

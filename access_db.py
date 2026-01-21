@@ -6,8 +6,17 @@ import pandas as pd
 from uni_parse import ConversationParser
 import numpy as np
 
+# Use centralized configuration
+try:
+    from core.config import Config
+    config = Config()
+    DB_PATH = config.DB_PATH
+except ImportError:
+    # Fallback for standalone usage
+    DB_PATH = "conversations.db"
+
 # Create a parser instance
-parser = ConversationParser("conversations.db")
+parser = ConversationParser(DB_PATH)
 
 
 def import_conversations():

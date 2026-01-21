@@ -6,8 +6,18 @@ from collections import Counter
 import re
 import json
 
+# Use centralized configuration
+try:
+    from core.config import Config
+    config = Config()
+    DB_PATH = config.DB_PATH
+    output_dir = str(config.CONTENT_ANALYSIS_DIR)
+except ImportError:
+    # Fallback for standalone usage
+    DB_PATH = "conversations.db"
+    output_dir = "content_analysis"
+
 # Create output directory
-output_dir = "content_analysis"
 os.makedirs(output_dir, exist_ok=True)
 
 # Set of common English stopwords
