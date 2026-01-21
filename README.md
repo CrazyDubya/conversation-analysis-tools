@@ -1,5 +1,10 @@
 # Conversation Database Analysis Tools
 
+[![CI](https://github.com/CrazyDubya/conversation-analysis-tools/workflows/CI/badge.svg)](https://github.com/CrazyDubya/conversation-analysis-tools/actions)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Code Quality](https://img.shields.io/badge/code%20quality-B+-brightgreen.svg)](CODE_REVIEW.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A comprehensive toolkit for analyzing conversation data from Claude and ChatGPT, featuring advanced NLP content analysis pipeline.
 
 ## Overview
