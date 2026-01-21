@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v --cov=pipeline --cov-report=xml --cov-report=term
+    
+    - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.10'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+    
+    - name: Run flake8
+      run: |
+        flake8 pipeline/ tests/ --max-line-length=100 --extend-ignore=E203,W503 --statistics
+    
+    - name: Run black check
+      run: |
+        black --check --line-length=100 pipeline/ tests/
+    
+    - name: Run isort check
+      run: |
+        isort --check-only --profile black --line-length=100 pipeline/ tests/
+    
+    - name: Run mypy
+      run: |
+        mypy pipeline/ --ignore-missing-imports
+      continue-on-error: true  # Don't fail CI yet, just warn
+
+  docs:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check markdown links
+      uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        use-quiet-mode: 'yes'
+        config-file: '.github/markdown-link-check-config.json'
+      continue-on-error: true  # Don't fail CI on doc link issues

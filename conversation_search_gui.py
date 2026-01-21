@@ -34,24 +34,20 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.cm as cm
 
-# Import the search engine module
-# We'll use its functionality but adapt it for GUI use
-from conversation_search_engine import ConversationSearchEngine
+# Import core modules for unified functionality
+from core.config import Config
+from core.search_engine import SearchEngine
+from core.database import DatabaseConnection
 
-# Database connection
-DB_PATH = '/Users/pup/Desktop/Arch/conversations.db'
+# Initialize configuration
+config = Config()
+Config.ensure_directories()
 
-# Output directories
+# Legacy compatibility - create output directories
 SEARCH_RESULTS_DIR = 'search_results'
 EMBEDDINGS_DIR = 'embeddings_cache'
 os.makedirs(SEARCH_RESULTS_DIR, exist_ok=True)
 os.makedirs(EMBEDDINGS_DIR, exist_ok=True)
-
-# Platform colors for visualization
-PLATFORM_COLORS = {
-    'claude': '#8C52FF',    # Purple
-    'chatgpt': '#00A67E',   # Green
-}
 
 class ConversationSearchGUI:
     """GUI wrapper for the Conversation Search Engine"""
@@ -65,13 +61,16 @@ class ConversationSearchGUI:
         self.root.geometry("1200x800")
         self.root.minsize(1000, 700)
         
-        # Initialize the search engine
-        self.search_engine = ConversationSearchEngine(DB_PATH)
+        # Initialize the search engine using core modules
+        self.db = DatabaseConnection(config.DB_PATH)
+        self.db.connect()
+        self.search_engine = SearchEngine(config.DB_PATH)
+        self.search_engine.connect()
         
-        # Cache some frequently used data
-        self.platforms = self.search_engine.platforms
-        self.models = self.search_engine.models
-        self.date_range = self.search_engine.date_range
+        # Cache some frequently used data from database
+        self.platforms = self.db.get_platforms()
+        self.models = self.db.get_models()
+        self.date_range = self.db.get_date_range()
         
         # Set up the main frame
         self.setup_ui()

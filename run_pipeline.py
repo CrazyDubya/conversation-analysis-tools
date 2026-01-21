@@ -7,6 +7,13 @@ import logging
 from pathlib import Path
 from pipeline import ContentAnalysisPipeline
 
+# Use centralized configuration for default db path
+try:
+    from core.config import Config
+    DEFAULT_DB = Config.DB_PATH
+except ImportError:
+    DEFAULT_DB = 'conversations.db'
+
 
 def load_config(config_path: str) -> dict:
     """Load configuration from YAML file."""
@@ -37,7 +44,7 @@ def main():
     )
     parser.add_argument(
         '--db',
-        default='conversations.db',
+        default=DEFAULT_DB,
         help='Path to SQLite database'
     )
     parser.add_argument(
