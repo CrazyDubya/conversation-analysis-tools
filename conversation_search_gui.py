@@ -35,9 +35,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.cm as cm
 
 # Import core modules for unified functionality
-from core.config import Config
-from core.search_engine import SearchEngine
-from core.database import DatabaseConnection
+from conversation_analysis.core.config import Config
+from conversation_analysis.core.search_engine import SearchEngine
+from conversation_analysis.core.database import DatabaseConnection
 
 # Initialize configuration
 config = Config()

@@ -8,7 +8,7 @@ import json
 
 # Use centralized configuration
 try:
-    from core.config import Config
+    from conversation_analysis.core.config import Config
     config = Config()
     DB_PATH = config.DB_PATH
     output_dir = str(config.CONTENT_ANALYSIS_DIR)

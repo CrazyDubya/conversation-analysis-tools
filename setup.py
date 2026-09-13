@@ -1,38 +1,35 @@
 #!/usr/bin/env python3
-"""Setup script for Content Analysis Pipeline.
-
-Installs all required dependencies and sets up the package.
-"""
+"""Setup script for the consolidated conversation-analysis toolkit."""
 
 from setuptools import setup, find_packages
-import os
 
-# Read README
 with open('README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
-# Read requirements
-requirements = [
-    'numpy>=1.21.0',
-    'pandas>=1.3.0',
-    'matplotlib>=3.4.0',
-    'PyYAML>=5.4.0',
-    'pytest>=7.0.0',
-    'pytest-cov>=3.0.0',
-]
+with open('requirements.txt') as f:
+    requirements = [l.strip() for l in f if l.strip() and not l.startswith('#')]
 
 setup(
-    name='conversation-analysis-tools',
-    version='1.0.0',
-    description='Content analysis pipeline for scraped research content',
+    name='conversation-analysis',
+    version='2.0.0',
+    description='Consolidated toolkit for ChatGPT/Claude conversation archive analysis',
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Stephen Thompson',
-    author_email='',
     url='https://github.com/CrazyDubya/conversation-analysis-tools',
-    packages=find_packages(),
+    package_dir={'': 'src'},
+    packages=find_packages(where='src'),
     install_requires=requirements,
     extras_require={
+        'optional': [
+            'anthropic>=0.18.0',
+            'openai>=1.0.0',
+            'sqlparse>=0.4.0',
+            'python-louvain>=0.16',
+            'pyvis>=0.3.0',
+            'graphviz>=0.20.0',
+            'Pillow>=9.0.0',
+        ],
         'dev': [
             'pytest>=7.0.0',
             'pytest-cov>=3.0.0',
@@ -40,20 +37,10 @@ setup(
             'black>=22.0.0',
         ],
     },
-    python_requires='>=3.7',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Science/Research',
-        'Topic :: Scientific/Engineering :: Artificial Intelligence',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-    ],
+    python_requires='>=3.8',
     entry_points={
         'console_scripts': [
-            'analyze-content=pipeline.pipeline:main',
+            'analyze-content=conversation_analysis.pipeline.pipeline:main',
         ],
     },
 )

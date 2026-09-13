@@ -5,11 +5,11 @@ import yaml
 import argparse
 import logging
 from pathlib import Path
-from pipeline import ContentAnalysisPipeline
+from conversation_analysis.pipeline import ContentAnalysisPipeline
 
 # Use centralized configuration for default db path
 try:
-    from core.config import Config
+    from conversation_analysis.core.config import Config
     DEFAULT_DB = Config.DB_PATH
 except ImportError:
     DEFAULT_DB = 'conversations.db'

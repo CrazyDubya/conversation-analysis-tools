@@ -1,7 +1,7 @@
 """Tests for DuplicateDetector."""
 
 import pytest
-from pipeline.duplicate_detector import DuplicateDetector
+from conversation_analysis.pipeline.duplicate_detector import DuplicateDetector
 
 
 class TestDuplicateDetector:

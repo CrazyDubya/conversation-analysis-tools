@@ -1,7 +1,7 @@
 """Tests for PriorityClassifier."""
 
 import pytest
-from pipeline.priority_classifier import PriorityClassifier, PriorityLevel
+from conversation_analysis.pipeline.priority_classifier import PriorityClassifier, PriorityLevel
 
 
 class TestPriorityClassifier:

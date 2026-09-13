@@ -7,7 +7,7 @@ Tests search functionality, result formatting, and export capabilities.
 import pytest
 import pandas as pd
 from pathlib import Path
-from core.search_engine import SearchEngine
+from conversation_analysis.core.search_engine import SearchEngine
 from tests.test_database import temp_db  # Reuse the fixture
 
 
@@ -109,7 +109,7 @@ def test_get_conversation_stats(temp_db):
 
 def test_export_results(temp_db, tmp_path):
     """Test exporting search results."""
-    from core.config import Config
+    from conversation_analysis.core.config import Config
     
     # Override output directory
     original_output = Config.OUTPUT_DIR

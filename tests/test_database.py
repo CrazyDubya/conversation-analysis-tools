@@ -8,7 +8,7 @@ and common query patterns.
 import pytest
 import sqlite3
 from pathlib import Path
-from core.database import DatabaseConnection, get_db_connection
+from conversation_analysis.core.database import DatabaseConnection, get_db_connection
 
 
 @pytest.fixture

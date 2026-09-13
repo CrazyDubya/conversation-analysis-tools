@@ -1,7 +1,7 @@
 """Tests for ExtractiveSummarizer."""
 
 import pytest
-from pipeline.summarizer import ExtractiveSummarizer
+from conversation_analysis.pipeline.summarizer import ExtractiveSummarizer
 
 
 class TestExtractiveSummarizer:

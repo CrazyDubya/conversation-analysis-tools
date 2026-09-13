@@ -1,0 +1,8 @@
+{
+  "tests/test_ingest.py::test_parse_conversations_round_trip": true,
+  "tests/test_duplicate_detector.py::TestDuplicateDetector::test_cluster_duplicates": true,
+  "tests/test_duplicate_detector.py::TestDuplicateDetector::test_get_unique_documents": true,
+  "tests/test_relevance_scorer.py::TestRelevanceScorer::test_keyword_density_score": true,
+  "tests/test_relevance_scorer.py::TestRelevanceScorer::test_keyword_coverage_score": true,
+  "tests/test_search_engine.py::test_date_range_search": true
+}

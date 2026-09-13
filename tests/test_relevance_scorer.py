@@ -1,7 +1,7 @@
 """Tests for RelevanceScorer."""
 
 import pytest
-from pipeline.relevance_scorer import RelevanceScorer
+from conversation_analysis.pipeline.relevance_scorer import RelevanceScorer
 
 
 class TestRelevanceScorer:

@@ -3,7 +3,7 @@
 import pytest
 import json
 import os
-from pipeline import ContentAnalysisPipeline
+from conversation_analysis.pipeline import ContentAnalysisPipeline
 
 
 class TestContentAnalysisPipeline:

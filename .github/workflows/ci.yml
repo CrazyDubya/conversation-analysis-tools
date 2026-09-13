@@ -31,7 +31,7 @@ jobs:
     
     - name: Run tests
       run: |
-        pytest tests/ -v --cov=pipeline --cov-report=xml --cov-report=term
+        pytest tests/ -v --cov=conversation_analysis --cov-report=xml --cov-report=term
     
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.10'
@@ -60,19 +60,19 @@ jobs:
     
     - name: Run flake8
       run: |
-        flake8 pipeline/ tests/ --max-line-length=100 --extend-ignore=E203,W503 --statistics
+        flake8 src/conversation_analysis/ tests/ --max-line-length=100 --extend-ignore=E203,W503 --statistics
     
     - name: Run black check
       run: |
-        black --check --line-length=100 pipeline/ tests/
+        black --check --line-length=100 src/conversation_analysis/ tests/
     
     - name: Run isort check
       run: |
-        isort --check-only --profile black --line-length=100 pipeline/ tests/
+        isort --check-only --profile black --line-length=100 src/conversation_analysis/ tests/
     
     - name: Run mypy
       run: |
-        mypy pipeline/ --ignore-missing-imports
+        mypy src/conversation_analysis/ --ignore-missing-imports
       continue-on-error: true  # Don't fail CI yet, just warn
 
   docs:

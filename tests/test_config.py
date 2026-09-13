@@ -8,7 +8,7 @@ and directory creation utilities.
 import pytest
 import os
 from pathlib import Path
-from core.config import Config
+from conversation_analysis.core.config import Config
 
 
 def test_config_defaults():
@@ -64,7 +64,7 @@ def test_ensure_directories(tmp_path):
 
 def test_singleton_instance():
     """Test that config singleton exists."""
-    from core.config import config
+    from conversation_analysis.core.config import config
     
     assert config is not None
     assert isinstance(config, Config)
