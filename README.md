@@ -1,496 +1,67 @@
-# Conversation Database Analysis Tools
+# conversation-analysis-tools
 
-[![CI](https://github.com/CrazyDubya/conversation-analysis-tools/workflows/CI/badge.svg)](https://github.com/CrazyDubya/conversation-analysis-tools/actions)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![Code Quality](https://img.shields.io/badge/code%20quality-B+-brightgreen.svg)](CODE_REVIEW.md)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Consolidated toolkit for analyzing exported ChatGPT / Claude conversations. Merged 2026-09-12
+from five Stephen Thompson repositories into this one home; the source repos were archived after the
+merge. Full file-by-file lineage lives in [docs/PROVENANCE.md](docs/PROVENANCE.md).
 
-A comprehensive toolkit for analyzing conversation data from Claude and ChatGPT, featuring advanced NLP content analysis pipeline.
-
-## Overview
-
-This repository provides tools for:
-- Database analysis and visualization of conversation data
-- Advanced content analysis with NLP pipeline
-- Relevance scoring and document ranking
-- Extractive summarization
-- Duplicate detection
-- Priority classification
-
-## Repository Structure
+## Layout
 
 ```
-conversation-analysis-tools/
-├── core/                        # Core modules (NEW in P0 refactoring)
-│   ├── config.py               # Centralized configuration management
-│   ├── database.py             # Unified database access layer
-│   └── search_engine.py        # Consolidated search functionality
-├── pipeline/                    # Content Analysis Pipeline
-│   ├── relevance_scorer.py    # TF-IDF relevance scoring
-│   ├── summarizer.py           # TextRank extractive summarization
-│   ├── duplicate_detector.py  # Cosine similarity detection
-│   ├── priority_classifier.py # Multi-factor priority classification
-│   └── pipeline.py             # Main integration class
-├── config/
-│   └── pipeline_config.yaml    # Configuration for pipeline
-├── tests/                      # Comprehensive test suite
-├── deprecated/                 # Legacy files (being phased out)
-├── analyze_conversations.py    # Visualizations and CSV exports
-├── content_analysis.py         # Basic text analysis
-├── conversation_search_gui.py  # Search GUI (refactored to use core/)
-└── run_pipeline.py             # Run content analysis pipeline
+src/conversation_analysis/
+├── core/            # search engine, database, config (from the original base repo)
+├── pipeline/       # priority classification, dedup, relevance, summarization pipeline
+├── ingest/         # archive_parser  (ChatGPT export -> parsed messages)
+│                   # html_extract    (HTML `var jsonData` -> JSON, recursive regex)
+│                   # aicode          (non-functional API stub, kept for provenance)
+├── analysis/       # clustering, anomaly, vector_space, duo_compare, claude_db,
+│                   # conversation_stats, analyzegpt, combined_analytics, ...
+├── viz/            # wordcloud, heatmaps, graphs (conversation flowcharts)
+├── schema_tools/   # LLM-gated SQL schema-change validator (quarantined; candidate for spin-out)
+└── config/         # pipeline_config.yaml
+apps/macos/         # GPT-Analyze2 macOS app, copied verbatim from CrazyDubya/GPT-Analyze2
+tests/              # pytest suite (core/pipeline + ingest)
+docs/PROVENANCE.md  # every file mapped to its source repo + commit
 ```
 
-## Features
+Root scripts (`analyze_conversations.py`, `run_pipeline.py`, `conversation_search_gui.py`, …) are
+the original base-repo entry points and now import from the `conversation_analysis` package.
 
-### Database Analysis
-The database contains:
-- `conversations` table: Metadata about each conversation
-- `messages` table: Individual messages within conversations
-
-Database views (via `create_views.sql`):
-1. `message_pairs`: Pairs of human messages and assistant responses
-2. `conversation_summary`: Overview statistics for each conversation
-3. `message_length_stats`: Statistics about message lengths
-4. `time_activity`: Time-based conversation activity data
-5. `model_usage`: Usage statistics by model
-
-### Content Analysis Pipeline (RUB-49) ✨
-
-**NEW**: Advanced NLP pipeline for processing scraped research content:
-
-1. **Relevance Scoring System**
-   - TF-IDF based relevance calculation
-   - Keyword density and coverage analysis
-   - Multi-criteria scoring with configurable weights
-
-2. **Extractive Summarization**
-   - TextRank algorithm for sentence importance
-   - Configurable summary length
-   - Multi-document summarization support
-
-3. **Duplicate Detection**
-   - Cosine similarity for content comparison
-   - Configurable similarity threshold
-   - Document clustering and deduplication
-
-4. **Priority Classification**
-   - Multi-factor priority scoring (relevance, length, keywords, recency)
-   - Five priority levels: CRITICAL, HIGH, MEDIUM, LOW, NONE
-   - Batch processing and ranking
-
-5. **Pipeline Integration**
-   - End-to-end processing workflow
-   - Database integration (SQLite)
-   - JSON export and database storage
-   - Comprehensive logging and statistics
-
-## Installation
-
-### Quick Setup
+## Install
 
 ```bash
-# Clone the repository
-git clone https://github.com/CrazyDubya/conversation-analysis-tools.git
-cd conversation-analysis-tools
-
-# Run setup script
-chmod +x setup.sh
-./setup.sh
-
-# Activate virtual environment
-source venv/bin/activate
-
-# Configure environment (optional)
-cp .env.example .env
-# Edit .env with your settings
-```
-
-### Manual Setup
-
-```bash
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Configure database path and settings
-cp .env.example .env
-# Edit .env: set DB_PATH and other settings
-
-# Create output directories
-mkdir -p output logs visualizations content_analysis
+# Optional/heavy extras (Anthropic/OpenAI clients, graphviz, pyvis, python-louvain, sqlparse):
+pip install -r requirements-optional.txt
+python setup.py install        # or: pip install .
 ```
 
 ## Usage
 
-### Using Core Modules (NEW - Recommended)
-
-The P0 refactoring introduced core modules that provide a clean, testable API:
-
-```python
-from core.config import Config
-from core.database import DatabaseConnection
-from core.search_engine import SearchEngine
-
-# Load configuration
-config = Config.load_from_env('.env')
-
-# Database operations
-with DatabaseConnection() as db:
-    platforms = db.get_platforms()
-    results = db.execute_query("SELECT * FROM conversations LIMIT 10")
-
-# Search operations
-with SearchEngine() as search:
-    results = search.keyword_search("machine learning", platform="claude")
-    stats = search.get_conversation_stats()
-    search.export_results(results, "search_results", format='csv')
+```bash
+analyze-content --help                    # pipeline CLI entry point
+python -m conversation_analysis.ingest.html_extract --input page.html --output data.json
+python -m conversation_analysis.schema_tools.main original.sql proposed.sql "$LLM_API_KEY"
+python src/conversation_analysis/analysis/clustering.py --input conversations.json
 ```
 
-See [deprecated/README.md](deprecated/README.md) for migration guide from legacy scripts.
+Input paths are configurable: every ported script that once hardcoded a
+`/Users/puppuccino/...` path now takes a CLI argument or a `CONVERSATIONS_JSON` /
+`CONV_ANALYSIS_INPUT_DIR` environment variable. See `docs/PROVENANCE.md` for the
+twin-file decisions (e.g. which of two near-identical scripts was kept).
 
-### Basic Analysis
-
-1. **Create database views:**
-   ```bash
-   sqlite3 conversations.db < create_views.sql
-   ```
-
-2. **Run analysis scripts:**
-   ```bash
-   python analyze_conversations.py
-   python content_analysis.py
-   ```
-
-3. **All-in-one script:**
-   ```bash
-   ./run_analysis.sh
-   ```
-
-### Content Analysis Pipeline
-
-#### Command Line
+## Tests
 
 ```bash
-# Run with default settings
-python run_pipeline.py
-
-# Analyze specific platform with limit
-python run_pipeline.py --platform claude --limit 100
-
-# Custom configuration
-python run_pipeline.py --config my_config.yaml --output results/analysis.json
-
-# Skip database storage
-python run_pipeline.py --no-save-db
+pytest
 ```
 
-#### Python API
-
-```python
-from pipeline import ContentAnalysisPipeline
-import yaml
-
-# Load configuration
-with open('config/pipeline_config.yaml') as f:
-    config = yaml.safe_load(f)
-
-# Initialize and run pipeline
-pipeline = ContentAnalysisPipeline(config=config, db_path='conversations.db')
-results = pipeline.process(platform='claude', limit=100)
-
-# Access results
-print(f"Processed {len(results['messages'])} messages")
-print(f"Found {results['statistics']['duplicate_count']} duplicates")
-
-# Export
-pipeline.save_results(results, 'output/analysis_results.json')
-```
-
-### Additional Usage Examples
-
-See the [examples section below](#usage-examples) for more detailed code samples including:
-- Basic search and export
-- Date range analysis
-- Custom pipeline configuration
-- Batch processing for large datasets
-- Environment-based configuration
-- Custom analysis scripts
-
-## Usage Examples
-
-#### Example 1: Basic Search and Export
-
-```python
-from core.search_engine import SearchEngine
-
-with SearchEngine() as search:
-    # Search for specific content
-    results = search.keyword_search("machine learning", platform="claude", limit=50)
-    
-    # Export to CSV
-    search.export_results(results, "ml_conversations", format='csv')
-    print(f"Exported {len(results)} results")
-```
-
-#### Example 2: Date Range Analysis
-
-```python
-from core.search_engine import SearchEngine
-
-with SearchEngine() as search:
-    # Get conversations from specific date range
-    results = search.date_range_search(
-        start_date="2024-01-01",
-        end_date="2024-01-31",
-        platform="chatgpt"
-    )
-    
-    # Get statistics
-    stats = search.get_conversation_stats()
-    print(f"Total: {stats['total_conversations']}")
-```
-
-#### Example 3: Custom Pipeline Configuration
-
-```python
-from pipeline import ContentAnalysisPipeline
-
-config = {
-    'keywords': ['AI', 'machine learning', 'neural networks'],
-    'relevance': {'threshold': 0.3, 'min_length': 50},
-    'duplicate_threshold': 0.85
-}
-
-pipeline = ContentAnalysisPipeline(config=config)
-results = pipeline.process(limit=200)
-
-# Filter by priority
-critical = [r for r in results['messages'] if r['priority'] == 'CRITICAL']
-print(f"Found {len(critical)} critical messages")
-```
-
-For more examples and troubleshooting, see:
-- [ARCHITECTURE.md](ARCHITECTURE.md) - System design and architecture
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common issues and solutions
-
-# Initialize and run pipeline
-pipeline = ContentAnalysisPipeline(config=config, db_path='conversations.db')
-results = pipeline.process(platform='claude', limit=100, skip_duplicates=True)
-
-# Save results
-pipeline.save_results(results, 'output/results.json')
-pipeline.store_results_db(results)
-
-# Access results
-for doc_id, doc_data in results['documents'].items():
-    print(f"Document {doc_id}:")
-    print(f"  Relevance: {doc_data['relevance']['combined']:.3f}")
-    print(f"  Priority: {doc_data['priority']['level']}")
-    print(f"  Summary: {doc_data['summary']}")
-```
-
-#### Individual Modules
-
-```python
-from pipeline import RelevanceScorer, ExtractiveSummarizer, DuplicateDetector, PriorityClassifier
-
-# Relevance scoring
-scorer = RelevanceScorer(keywords=['AI', 'machine learning'])
-documents = [(1, "Text about AI..."), (2, "More text...")]
-ranked = scorer.rank_documents(documents, top_k=10)
-
-# Summarization
-summarizer = ExtractiveSummarizer()
-summary = summarizer.summarize_to_text("Long text here...", num_sentences=3)
-
-# Duplicate detection
-detector = DuplicateDetector(similarity_threshold=0.8)
-duplicates = detector.find_duplicates(documents)
-unique_ids = detector.get_unique_documents(documents)
-
-# Priority classification
-classifier = PriorityClassifier()
-docs_with_scores = [(1, "Text...", 0.8), (2, "More text...", 0.6)]
-ranked = classifier.rank_by_priority(docs_with_scores)
-```
-
-## Output
-
-All analysis outputs are saved to:
-- `./visualizations/`: General conversation analytics
-- `./content_analysis/`: Basic text content analysis
-- `./output/`: Content analysis pipeline results (JSON)
-- `./logs/`: Pipeline execution logs
-
-Pipeline results table in database:
-```sql
-CREATE TABLE analysis_results (
-    message_id INTEGER PRIMARY KEY,
-    relevance_score REAL,
-    summary TEXT,
-    priority_level TEXT,
-    priority_score REAL,
-    analyzed_at TEXT,
-    metadata TEXT
-);
-```
-
-## Configuration
-
-Edit `config/pipeline_config.yaml` to customize the content analysis pipeline:
-
-```yaml
-# Keywords for relevance scoring
-keywords:
-  - machine learning
-  - deep learning
-  - artificial intelligence
-
-# Scoring weights
-relevance:
-  weights:
-    density: 0.3
-    coverage: 0.4
-    tfidf: 0.3
-
-# Summarization
-summarizer:
-  damping: 0.85
-  summary_sentences: 3
-
-# Duplicate detection threshold
-duplicate_threshold: 0.8
-
-# Priority classification thresholds
-priority:
-  priority_thresholds:
-    critical: 0.85
-    high: 0.65
-    medium: 0.45
-    low: 0.25
-```
-
-See [PIPELINE_README.md](PIPELINE_README.md) for detailed pipeline documentation.
-
-## Testing
-
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Run with coverage report
-pytest tests/ --cov=pipeline --cov-report=html
-
-# Run specific test module
-pytest tests/test_pipeline.py -v
-```
-
-Test coverage: **90%+**
-
-## Performance
-
-Benchmarks on 1000 documents:
-- **Relevance Scoring**: ~2-3 seconds
-- **Summarization**: ~5-8 seconds
-- **Duplicate Detection**: ~3-5 seconds
-- **Priority Classification**: ~1-2 seconds
-- **Full Pipeline**: ~12-18 seconds
-
-## Advanced Analysis
-
-Run specific SQL queries:
-```bash
-sqlite3 conversations.db < advanced_queries.sql
-```
-
-Or run a specific query:
-```bash
-sqlite3 conversations.db "SELECT * FROM conversation_summary LIMIT 10;"
-```
-
-## Requirements
-
-- Python 3.7+
-- numpy >= 1.21.0
-- pandas >= 1.3.0
-- matplotlib >= 3.4.0
-- PyYAML >= 5.4.0
-- pytest >= 7.0.0 (for testing)
-
-## Documentation
-
-Complete documentation suite:
-
-### User Documentation
-- **[README.md](README.md)** - Getting started guide and overview
-- **[PIPELINE_README.md](PIPELINE_README.md)** - Detailed pipeline documentation
-- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues and solutions
-
-### Developer Documentation
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute
-- **[CODING_STANDARDS.md](CODING_STANDARDS.md)** - Code quality standards
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System design and architecture
-
-### Project Documentation
-- **[CODE_REVIEW.md](CODE_REVIEW.md)** - Comprehensive code analysis
-- **[REFACTORING_PLAN.md](REFACTORING_PLAN.md)** - Technical debt roadmap
-- **[deprecated/README.md](deprecated/README.md)** - Migration guide
-
-### Configuration
-- **[config/pipeline_config.yaml](config/pipeline_config.yaml)** - Pipeline settings (commented)
-- **[.env.example](.env.example)** - Environment configuration template
-
-## Issues Tracking
-
-- **RUB-49**: Content Analysis Pipeline Implementation ✅ Complete
-- **Code Quality**: Comprehensive review completed - see [CODE_REVIEW.md](CODE_REVIEW.md)
-- **Refactoring**: P0, P1, P2 completed - see [REFACTORING_PLAN.md](REFACTORING_PLAN.md)
-  - Quality improvement: 68/100 (C+) → 90/100 (A-)
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
-
-- Setting up your development environment
-- Code style guidelines
-- Testing requirements
-- Pull request process
-- Reporting bugs and suggesting features
-
-Quick start:
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new features
-4. Ensure all tests pass
-5. Submit a pull request
+## Security note
+
+`src/conversation_analysis/ingest/aicode.py` is a non-functional stub preserved for provenance;
+it reads `ANTHROPIC_API_KEY` from the environment and contains no key. The archived source
+repos keep their full git history, so **rotate/revoke the historical Anthropic API key** used by
+the old `ai-monitoring-core` experiments.
 
 ## License
 
-MIT License
-
-## Author
-
-Stephen Thompson
-
-## Changelog
-
-### v1.0.0 (2024)
-- ✨ Added comprehensive content analysis pipeline (RUB-49)
-- ✅ Relevance scoring with TF-IDF
-- ✅ TextRank extractive summarization
-- ✅ Duplicate detection with cosine similarity
-- ✅ Priority classification system
-- ✅ Main pipeline integration
-- ✅ Configuration system
-- ✅ Comprehensive test suite (90%+ coverage)
-- 📚 Complete documentation
-- 🚀 Setup and deployment scripts
-
-### Earlier
-- Basic conversation analysis scripts
-- Database visualization tools
-- SQL query templates
+MIT — same as the source repositories.

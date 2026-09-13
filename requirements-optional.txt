@@ -1,0 +1,12 @@
+# Optional / heavy dependencies for specific modules:
+# - conversation_analysis.analysis.claude_db (python-louvain, pyvis, anthropic)
+# - conversation_analysis.analysis.analyze_haiku (anthropic)
+# - conversation_analysis.viz.graphs (graphviz binary + python package, Pillow)
+# - conversation_analysis.schema_tools (openai, sqlparse)
+anthropic>=0.18.0
+openai>=1.0.0
+sqlparse>=0.4.0
+python-louvain>=0.16
+pyvis>=0.3.0
+graphviz>=0.20.0
+Pillow>=9.0.0
