@@ -65,3 +65,11 @@ the old `ai-monitoring-core` experiments.
 ## License
 
 MIT — same as the source repositories.
+
+## Wave 5 consolidation (2026-09-14)
+
+| Source repo | Subdirectory | Merged HEAD |
+|---|---|---|
+| `CrazyDubya/rabbitmq-llm-chat` (`master`) | `rabbitmq-llm-chat/` | `6fe07582` |
+
+Sources were archived after byte-identical verification. File-by-file lineage in `docs/PROVENANCE.md`.

@@ -118,3 +118,44 @@ itself and were mechanically relocated/updated as described above.
 Archived source repos retain full git history. The historical Anthropic API key used by the
 `ai-monitoring-core` experiments must be rotated/revoked by Stephen — this cannot be done by
 the assistant and is recorded here as a required follow-up.
+
+## Wave 5 (2026-09-14)
+
+Source SHAs at merge time:
+- `CrazyDubya/rabbitmq-llm-chat` — `6fe07582` (`master`) → merged verbatim under `rabbitmq-llm-chat/`
+
+
+### Moved files — rabbitmq-llm-chat (30)
+
+| New path | Source repo | Source path | Source commit |
+|---|---|---|---|
+| `rabbitmq-llm-chat/.env.example` | rabbitmq-llm-chat | `.env.example` | `6fe07582` |
+| `rabbitmq-llm-chat/.gitignore` | rabbitmq-llm-chat | `.gitignore` | `6fe07582` |
+| `rabbitmq-llm-chat/CODE_REVIEW_SUMMARY.md` | rabbitmq-llm-chat | `CODE_REVIEW_SUMMARY.md` | `6fe07582` |
+| `rabbitmq-llm-chat/Dockerfile` | rabbitmq-llm-chat | `Dockerfile` | `6fe07582` |
+| `rabbitmq-llm-chat/Makefile` | rabbitmq-llm-chat | `Makefile` | `6fe07582` |
+| `rabbitmq-llm-chat/README.md` | rabbitmq-llm-chat | `README.md` | `6fe07582` |
+| `rabbitmq-llm-chat/__pycache__/chatroom_manager.cpython-312.pyc` | rabbitmq-llm-chat | `__pycache__/chatroom_manager.cpython-312.pyc` | `6fe07582` |
+| `rabbitmq-llm-chat/__pycache__/consume.cpython-312.pyc` | rabbitmq-llm-chat | `__pycache__/consume.cpython-312.pyc` | `6fe07582` |
+| `rabbitmq-llm-chat/__pycache__/llm_registry.cpython-312.pyc` | rabbitmq-llm-chat | `__pycache__/llm_registry.cpython-312.pyc` | `6fe07582` |
+| `rabbitmq-llm-chat/__pycache__/models.cpython-312.pyc` | rabbitmq-llm-chat | `__pycache__/models.cpython-312.pyc` | `6fe07582` |
+| `rabbitmq-llm-chat/__pycache__/rabbitmq_module.cpython-312.pyc` | rabbitmq-llm-chat | `__pycache__/rabbitmq_module.cpython-312.pyc` | `6fe07582` |
+| `rabbitmq-llm-chat/__pycache__/web_interface.cpython-312.pyc` | rabbitmq-llm-chat | `__pycache__/web_interface.cpython-312.pyc` | `6fe07582` |
+| `rabbitmq-llm-chat/chat-start.py` | rabbitmq-llm-chat | `chat-start.py` | `6fe07582` |
+| `rabbitmq-llm-chat/chatroom_manager.py` | rabbitmq-llm-chat | `chatroom_manager.py` | `6fe07582` |
+| `rabbitmq-llm-chat/config.py` | rabbitmq-llm-chat | `config.py` | `6fe07582` |
+| `rabbitmq-llm-chat/consume.py` | rabbitmq-llm-chat | `consume.py` | `6fe07582` |
+| `rabbitmq-llm-chat/docker-compose.yml` | rabbitmq-llm-chat | `docker-compose.yml` | `6fe07582` |
+| `rabbitmq-llm-chat/index.html` | rabbitmq-llm-chat | `index.html` | `6fe07582` |
+| `rabbitmq-llm-chat/index2.html` | rabbitmq-llm-chat | `index2.html` | `6fe07582` |
+| `rabbitmq-llm-chat/llm_registry.py` | rabbitmq-llm-chat | `llm_registry.py` | `6fe07582` |
+| `rabbitmq-llm-chat/logLLMchats.py` | rabbitmq-llm-chat | `logLLMchats.py` | `6fe07582` |
+| `rabbitmq-llm-chat/logger.py` | rabbitmq-llm-chat | `logger.py` | `6fe07582` |
+| `rabbitmq-llm-chat/main.py` | rabbitmq-llm-chat | `main.py` | `6fe07582` |
+| `rabbitmq-llm-chat/models.py` | rabbitmq-llm-chat | `models.py` | `6fe07582` |
+| `rabbitmq-llm-chat/rabbit.py` | rabbitmq-llm-chat | `rabbit.py` | `6fe07582` |
+| `rabbitmq-llm-chat/rabbitmq_module.py` | rabbitmq-llm-chat | `rabbitmq_module.py` | `6fe07582` |
+| `rabbitmq-llm-chat/requirements.txt` | rabbitmq-llm-chat | `requirements.txt` | `6fe07582` |
+| `rabbitmq-llm-chat/tests/__init__.py` | rabbitmq-llm-chat | `tests/__init__.py` | `6fe07582` |
+| `rabbitmq-llm-chat/tests/test_core.py` | rabbitmq-llm-chat | `tests/test_core.py` | `6fe07582` |
+| `rabbitmq-llm-chat/web_interface.py` | rabbitmq-llm-chat | `web_interface.py` | `6fe07582` |
