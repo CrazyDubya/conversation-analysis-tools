@@ -72,4 +72,6 @@ MIT — same as the source repositories.
 |---|---|---|
 | `CrazyDubya/rabbitmq-llm-chat` (`master`) | `rabbitmq-llm-chat/` | `6fe07582` |
 
+| `CrazyDubya/WikipediaANIReview` (`main`) | `wikipedia-ani-review/` | `4a8249ad` |
+
 Sources were archived after byte-identical verification. File-by-file lineage in `docs/PROVENANCE.md`.

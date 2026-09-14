@@ -159,3 +159,41 @@ Source SHAs at merge time:
 | `rabbitmq-llm-chat/tests/__init__.py` | rabbitmq-llm-chat | `tests/__init__.py` | `6fe07582` |
 | `rabbitmq-llm-chat/tests/test_core.py` | rabbitmq-llm-chat | `tests/test_core.py` | `6fe07582` |
 | `rabbitmq-llm-chat/web_interface.py` | rabbitmq-llm-chat | `web_interface.py` | `6fe07582` |
+- `CrazyDubya/WikipediaANIReview` — `4a8249ad` (`main`) → merged verbatim under `wikipedia-ani-review/`
+
+
+### Moved files — WikipediaANIReview (31)
+
+| New path | Source repo | Source path | Source commit |
+|---|---|---|---|
+| `wikipedia-ani-review/.gitignore` | WikipediaANIReview | `.gitignore` | `4a8249ad` |
+| `wikipedia-ani-review/ASYNC_REFACTOR.md` | WikipediaANIReview | `ASYNC_REFACTOR.md` | `4a8249ad` |
+| `wikipedia-ani-review/COMPLETION.md` | WikipediaANIReview | `COMPLETION.md` | `4a8249ad` |
+| `wikipedia-ani-review/FEATURES.md` | WikipediaANIReview | `FEATURES.md` | `4a8249ad` |
+| `wikipedia-ani-review/IMPLEMENTATION.md` | WikipediaANIReview | `IMPLEMENTATION.md` | `4a8249ad` |
+| `wikipedia-ani-review/QUICKSTART.md` | WikipediaANIReview | `QUICKSTART.md` | `4a8249ad` |
+| `wikipedia-ani-review/README.md` | WikipediaANIReview | `README.md` | `4a8249ad` |
+| `wikipedia-ani-review/TEST_RESULTS_REVIEW.md` | WikipediaANIReview | `TEST_RESULTS_REVIEW.md` | `4a8249ad` |
+| `wikipedia-ani-review/analyzer.py` | WikipediaANIReview | `analyzer.py` | `4a8249ad` |
+| `wikipedia-ani-review/analyzer_async.py` | WikipediaANIReview | `analyzer_async.py` | `4a8249ad` |
+| `wikipedia-ani-review/ani_review.py` | WikipediaANIReview | `ani_review.py` | `4a8249ad` |
+| `wikipedia-ani-review/ani_review_async.py` | WikipediaANIReview | `ani_review_async.py` | `4a8249ad` |
+| `wikipedia-ani-review/api_scraper.py` | WikipediaANIReview | `api_scraper.py` | `4a8249ad` |
+| `wikipedia-ani-review/api_scraper_async.py` | WikipediaANIReview | `api_scraper_async.py` | `4a8249ad` |
+| `wikipedia-ani-review/config.example.env` | WikipediaANIReview | `config.example.env` | `4a8249ad` |
+| `wikipedia-ani-review/database.py` | WikipediaANIReview | `database.py` | `4a8249ad` |
+| `wikipedia-ani-review/demo_async_performance.py` | WikipediaANIReview | `demo_async_performance.py` | `4a8249ad` |
+| `wikipedia-ani-review/generate_screenshots.py` | WikipediaANIReview | `generate_screenshots.py` | `4a8249ad` |
+| `wikipedia-ani-review/models.py` | WikipediaANIReview | `models.py` | `4a8249ad` |
+| `wikipedia-ani-review/profiling_utils.py` | WikipediaANIReview | `profiling_utils.py` | `4a8249ad` |
+| `wikipedia-ani-review/requirements.txt` | WikipediaANIReview | `requirements.txt` | `4a8249ad` |
+| `wikipedia-ani-review/scraper.py` | WikipediaANIReview | `scraper.py` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/01_async_tests.png` | WikipediaANIReview | `screenshots/01_async_tests.png` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/02_performance_demo.png` | WikipediaANIReview | `screenshots/02_performance_demo.png` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/03_database_init.png` | WikipediaANIReview | `screenshots/03_database_init.png` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/04_cli_help_main.png` | WikipediaANIReview | `screenshots/04_cli_help_main.png` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/05_cli_help_async.png` | WikipediaANIReview | `screenshots/05_cli_help_async.png` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/06_report_output.png` | WikipediaANIReview | `screenshots/06_report_output.png` | `4a8249ad` |
+| `wikipedia-ani-review/screenshots/07_nogil_report.png` | WikipediaANIReview | `screenshots/07_nogil_report.png` | `4a8249ad` |
+| `wikipedia-ani-review/test_async.py` | WikipediaANIReview | `test_async.py` | `4a8249ad` |
+| `wikipedia-ani-review/vote_parser.py` | WikipediaANIReview | `vote_parser.py` | `4a8249ad` |
