@@ -28,7 +28,7 @@ monsterapi~=1.0.7
 
 # Utilities
 markdown2~=2.4.13
-pillow~=10.2.0
+pillow==13.0.0
 
 # Development (Optional)
 pytest~=8.1.1
