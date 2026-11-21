@@ -68,17 +68,19 @@ def save_conversations_to_files(parsed_conversations, output_dir):
         os.makedirs(output_dir)
 
     filename_counts = {}
+    used_filenames = set()
 
     for conversation in parsed_conversations:
         title = conversation['title']
         base_filename = sanitize_filename(title[:10])
 
-        if base_filename in filename_counts:
-            filename_counts[base_filename] += 1
-            filename = f"{base_filename}_{filename_counts[base_filename]}.json"
-        else:
-            filename_counts[base_filename] = 1
-            filename = f"{base_filename}.json"
+        count = filename_counts.get(base_filename, 0) + 1
+        filename = f"{base_filename}_{count}.json" if count > 1 else f"{base_filename}.json"
+        while filename in used_filenames:
+            count += 1
+            filename = f"{base_filename}_{count}.json"
+        filename_counts[base_filename] = count
+        used_filenames.add(filename)
 
         filepath = os.path.join(output_dir, filename)
 
