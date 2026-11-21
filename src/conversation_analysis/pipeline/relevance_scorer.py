@@ -124,40 +124,44 @@ class RelevanceScorer:
 
         return tfidf
 
-    def keyword_density_score(self, text: str) -> float:
-        """Calculate keyword density score.
+    def _keyword_matches(self, text: str):
+        """Find contiguous whole-word phrases without bridging removed stopwords.
 
-        Args:
-            text: Input text
-
-        Returns:
-            Keyword density score (0-1)
+        Keep the existing content-token denominator. Overlapping phrases count
+        each content-token occurrence only once for density.
         """
+        words = re.findall(r'\b[a-z]+\b', text.lower()) if isinstance(text, str) else []
+        content = {i for i, word in enumerate(words)
+                   if len(word) >= 3 and word not in self.stopwords}
+        covered = set()
+        matched = 0
+        for keyword in self.keywords:
+            phrase = re.findall(r'\b[a-z]+\b', keyword)
+            found = False
+            if not phrase:
+                continue
+            for start in range(len(words) - len(phrase) + 1):
+                if words[start:start + len(phrase)] == phrase:
+                    positions = content.intersection(range(start, start + len(phrase)))
+                    if positions:
+                        found = True
+                        covered.update(positions)
+            matched += found
+        return len(covered), len(content), matched
+
+    def keyword_density_score(self, text: str) -> float:
+        """Fraction of content-token occurrences covered by configured keywords."""
         if not self.keywords:
             return 0.0
-
-        tokens = self.tokenize(text)
-        if not tokens:
-            return 0.0
-
-        keyword_count = sum(1 for token in tokens if token in self.keywords)
-        return keyword_count / len(tokens)
+        covered, total, _ = self._keyword_matches(text)
+        return covered / total if total else 0.0
 
     def keyword_coverage_score(self, text: str) -> float:
-        """Calculate what fraction of keywords appear in text.
-
-        Args:
-            text: Input text
-
-        Returns:
-            Coverage score (0-1)
-        """
+        """Fraction of configured whole-word keywords or phrases found in text."""
         if not self.keywords:
             return 0.0
-
-        tokens = set(self.tokenize(text))
-        matched_keywords = sum(1 for kw in self.keywords if kw in tokens)
-        return matched_keywords / len(self.keywords)
+        _, _, matched = self._keyword_matches(text)
+        return matched / len(self.keywords)
 
     def tfidf_keyword_score(self, text: str) -> float:
         """Calculate TF-IDF score for keywords in text.
