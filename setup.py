@@ -19,6 +19,7 @@ setup(
     url='https://github.com/CrazyDubya/conversation-analysis-tools',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
+    package_data={'conversation_analysis': ['config/pipeline_config.yaml']},
     install_requires=requirements,
     extras_require={
         'optional': [
@@ -40,7 +41,7 @@ setup(
     python_requires='>=3.8',
     entry_points={
         'console_scripts': [
-            'analyze-content=conversation_analysis.pipeline.pipeline:main',
+            'analyze-content=conversation_analysis.pipeline.cli:main',
         ],
     },
 )
