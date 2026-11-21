@@ -273,7 +273,9 @@ class ContentAnalysisPipeline:
         self.logger.info(f"Processing {len(documents)} documents")
 
         # 2. Analyze relevance
-        relevance_scores = self.analyze_relevance(documents)
+        relevance_scores = self.analyze_relevance(
+            documents, weights=self.config.get('relevance', {}).get('weights')
+        )
 
         # 3. Detect duplicates
         duplicate_pairs = self.detect_duplicates(documents)
@@ -287,7 +289,9 @@ class ContentAnalysisPipeline:
         # 5. Generate summaries
         summaries = self.generate_summaries(
             documents,
-            num_sentences=self.config.get('summary_sentences', 3)
+            num_sentences=self.config.get('summarizer', {}).get(
+                'summary_sentences', self.config.get('summary_sentences', 3)
+            )
         )
 
         # 6. Classify priorities
