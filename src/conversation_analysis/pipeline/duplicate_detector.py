@@ -51,7 +51,8 @@ class DuplicateDetector:
         if not isinstance(text, str):
             return []
 
-        words = re.findall(r'\b[a-z]{3,}\b', text.lower())
+        # Short non-stopword labels distinguish otherwise identical documents.
+        words = re.findall(r'\b[a-z]+\b', text.lower())
         return [w for w in words if w not in self.stopwords]
 
     def create_tf_vector(self, tokens: List[str]) -> Dict[str, float]:

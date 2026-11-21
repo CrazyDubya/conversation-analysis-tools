@@ -153,13 +153,17 @@ class SearchEngine:
         """
         self._ensure_connected()
         
-        sql_query = """
+        # Some supported conversation databases do not record update times.
+        # Preserve the result column without inventing a timestamp or migrating.
+        columns = {row['name'] for row in self.db.execute_query('PRAGMA table_info(conversations)')}
+        updated_at = 'c.updated_at' if 'updated_at' in columns else 'NULL AS updated_at'
+        sql_query = f"""
             SELECT 
                 c.id AS conversation_id,
                 c.title,
                 c.platform,
                 c.created_at,
-                c.updated_at,
+                {updated_at},
                 COUNT(m.id) AS message_count
             FROM conversations c
             LEFT JOIN messages m ON c.id = m.conversation_id
